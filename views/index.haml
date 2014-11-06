@@ -1,0 +1,21 @@
+!!! 5
+%html
+  %head
+    %link{href: '//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css', rel: 'stylesheet'}
+    %link{rel: 'stylesheet', href: '/assets/app.css'}
+  %body{'ng-app' => 'myApp'}
+    %ng-view
+
+    %script{id: 'index.html', type: 'text/ng-template'}
+      #sidebar.col-lg-3
+        .panel.panel-default
+          .panel-heading
+            %h3.panel-title Search
+          .panel-body
+            %ng-place-autocompleter
+      %ng-google-map
+
+    %script{src: "//maps.googleapis.com/maps/api/js?libraries=places&key=#{ENV['GOOGLE_API_KEY']}"}
+    %script{src: '//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.5/angular.js'}
+    %script{src: '//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.5/angular-route.js'}
+    %script{src: '/assets/app.js'}
