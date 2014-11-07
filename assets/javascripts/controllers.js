@@ -3,8 +3,9 @@
 
   var app = angular.module('myApp');
 
-  app.controller('MapController', ['$scope', 'Route', function($scope, Route) {
-    var route = new Route();
+  app.controller('MapController', ['$scope', 'Route', 'Markers', function($scope, Route, Markers) {
+    var route = new Route(),
+        markers = new Markers(route.getPolyline());
 
     $scope.$on('places:changed', function(_event, place) {
       var map = $scope.map;
@@ -18,15 +19,22 @@
 
     $scope.$on('map:click', function(event, latLng) {
       route.addLatLng(latLng);
-      $scope.$apply();
       route.getPolyline().setMap($scope.map);
+      markers.draw();
+      $scope.$apply();
+    });
+
+    $scope.$watch('routeType', function() {
+      route.setRouteType($scope.routeType);
+    });
+
+    $scope.$watch('showMapMarkers', function() {
+      markers.setVisible($scope.showMapMarkers);
     });
 
     $scope.route = route;
     $scope.unitType = google.maps.UnitSystem.METRIC;
     $scope.routeType = route.getRouteType();
-    $scope.$watch('routeType', function() {
-      $scope.route.setRouteType($scope.routeType);
-    });
+    $scope.showMapMarkers = markers.getVisible();
   }]);
 })(angular, google);
