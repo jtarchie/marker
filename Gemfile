@@ -8,7 +8,10 @@ gem 'sinatra-contrib'
 
 group :development do
   gem 'dotenv'
+  gem 'foreman'
   gem 'jasmine'
   gem 'jshintrb'
 end
+
+ruby '2.1.4'
 
