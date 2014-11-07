@@ -6,7 +6,7 @@
   app.directive('ngGoogleMap', function() {
     return {
       restrict: 'E',
-      link: function link(scope, container, attrs) {
+      link: function link($scope, container, attrs) {
         var element = document.createElement('DIV');
         element.style.width = '100%';
         element.style.height= '100%';
@@ -26,7 +26,11 @@
           overviewMapControl: false
         });
 
-        scope.map = map;
+        google.maps.event.addListener(map, 'click', function(event) {
+          $scope.$broadcast('map:click', event.latLng);
+        });
+
+        $scope.map = map;
       }
     }
   });
@@ -34,7 +38,7 @@
   app.directive('ngPlaceAutocompleter', function() {
     return {
       restrict: 'E',
-      link: function link(scope, container, attrs) {
+      link: function link($scope, container, attrs) {
         var input = document.createElement('INPUT');
         input.classList.add('form-control');
         container.prepend(input);
@@ -43,10 +47,10 @@
         google.maps.event.addListener(autocompleter, 'place_changed', function() {
           var place = autocompleter.getPlace();
           if (place.geometry) {
-            scope.$broadcast('places:changed', place);
+            $scope.$broadcast('places:changed', place);
           }
         });
-        scope.autocompleter = autocompleter;
+        $scope.autocompleter = autocompleter;
       }
     }
   });
