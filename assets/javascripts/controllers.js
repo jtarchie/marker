@@ -18,10 +18,10 @@
     });
 
     $scope.$on('map:click', function(event, latLng) {
-      route.addLatLng(latLng);
-      route.getPolyline().setMap($scope.map);
-      markers.draw();
-      $scope.$apply();
+      route.addLatLng(latLng).then(function() {
+        route.getPolyline().setMap($scope.map);
+        markers.draw();
+      });
     });
 
     $scope.$watch('routeType', function() {

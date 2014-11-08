@@ -9,25 +9,6 @@
     });
     this.routeType = google.maps.TravelMode.WALKING;
   }
-  Route.prototype.addLatLng = function(latLng) {
-    var path = this.polyline.getPath();
-    if(path.getLength() === 0 || this.routeType === 'NOTHING') {
-      path.push(latLng);
-    } else {
-      var directionsService = new google.maps.DirectionsService();
-      directionsService.route({
-        origin: path.getAt(path.getLength() - 1),
-        destination: latLng,
-        travelMode: this.routeType
-      }, function(response, status) {
-        if(status === google.maps.DirectionsStatus.OK) {
-          response.routes[0].overview_path.forEach(function(latLng) {
-            path.push(latLng);
-          });
-        }
-      });
-    }
-  };
   Route.prototype.totalDistance = function() {
     return google.maps.geometry.spherical.computeLength(this.polyline.getPath());
   };
@@ -41,7 +22,37 @@
     return this.routeType;
   };
 
-  app.service('Route', function() { return Route; });
+  app.service('Route', ['$q', function($q) {
+    Route.prototype.addLatLng = function(latLng) {
+      var path = this.polyline.getPath(),
+          deferred = $q.defer();
+
+      if(path.getLength() === 0 || this.routeType === 'NOTHING') {
+        setTimeout(deferred.resolve, 0);
+        return deferred.promise.then(function() {
+          path.push(latLng);
+        });
+      } else {
+        var directionsService = new google.maps.DirectionsService();
+        directionsService.route({
+          origin: path.getAt(path.getLength() - 1),
+          destination: latLng,
+          travelMode: this.routeType
+        }, function(response, status) {
+          if(status === google.maps.DirectionsStatus.OK) {
+            response.routes[0].overview_path.forEach(function(latLng) {
+              path.push(latLng);
+            });
+          }
+          deferred.resolve();
+        });
+
+        return deferred.promise;
+      }
+    };
+
+    return Route;
+  }]);
 
   function Markers(polyline) {
     this.polyline = polyline;
@@ -57,7 +68,7 @@
     this.drawMarkers();
   };
   Markers.prototype.draw = function() {
-    var coordinates = this.polyline.getPath().getArray(),
+    var coordinates = this.polyline.getPath().getArray().slice(0),
         totalDistance = 0,
         prevDistance = 0,
         expectedDistance = this.distanceBetween,
@@ -70,7 +81,6 @@
       totalDistance += google.maps.geometry.spherical.computeDistanceBetween(prevLatLng, thisLatLng);
 
       if(totalDistance >= expectedDistance) {
-        console.log(prevLatLng, thisLatLng);
         var distanceFromPrev = expectedDistance - prevDistance,
             markerLocation = google.maps.geometry.spherical.computeOffset(
               prevLatLng,
