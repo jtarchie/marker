@@ -57,19 +57,20 @@
     this.drawMarkers();
   };
   Markers.prototype.draw = function() {
-    var path = this.polyline.getPath(),
+    var coordinates = this.polyline.getPath().getArray(),
         totalDistance = 0,
         prevDistance = 0,
         expectedDistance = this.distanceBetween,
         markers = [];
-    for(var i = 1; i < path.getLength(); i++) {
-      var prevLatLng = path.getAt(i-1),
-          thisLatLng = path.getAt(i);
+    for(var i = 1; i < coordinates.length; i++) {
+      var prevLatLng = coordinates[ i-1 ],
+          thisLatLng = coordinates[ i ];
 
       prevDistance = totalDistance;
       totalDistance += google.maps.geometry.spherical.computeDistanceBetween(prevLatLng, thisLatLng);
 
       if(totalDistance >= expectedDistance) {
+        console.log(prevLatLng, thisLatLng);
         var distanceFromPrev = expectedDistance - prevDistance,
             markerLocation = google.maps.geometry.spherical.computeOffset(
               prevLatLng,
@@ -78,9 +79,12 @@
             ),
             marker = new google.maps.Marker({
               position: markerLocation,
+              icon: 'https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld='+ (markers.length + 1).toString() +'|FF0000|000000',
               title: (markers.length + 1).toString()
             });
         markers.push(marker);
+        coordinates.splice(i, 0, markerLocation);
+        totalDistance -= google.maps.geometry.spherical.computeDistanceBetween(markerLocation, thisLatLng);
         expectedDistance = this.distanceBetween * (markers.length + 1);
       }
     }
