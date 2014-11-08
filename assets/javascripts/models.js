@@ -1,12 +1,16 @@
 (function(angular, google, undefined) {
   'use strict';
 
+  function newPolyline(route) {
+    route.polyline = new google.maps.Polyline({
+      geodesic: true
+    });
+  }
+
   var app = angular.module('myApp');
 
   function Route() {
-    this.polyline = new google.maps.Polyline({
-      geodesic: true
-    });
+    newPolyline(this);
     this.routeType = google.maps.TravelMode.WALKING;
   }
   Route.prototype.totalDistance = function() {
@@ -20,6 +24,11 @@
   };
   Route.prototype.getRouteType = function() {
     return this.routeType;
+  };
+  Route.prototype.reset = function() {
+    this.polyline.setMap(null);
+    delete(this.polyline);
+    newPolyline(this);
   };
 
   app.service('Route', ['$q', function($q) {
@@ -54,8 +63,8 @@
     return Route;
   }]);
 
-  function Markers(polyline) {
-    this.polyline = polyline;
+  function Markers(route) {
+    this.route = route;
     this.visible = true;
     this.distanceBetween = 1609.34;
     this.markers = [];
@@ -68,7 +77,7 @@
     this.drawMarkers();
   };
   Markers.prototype.draw = function() {
-    var coordinates = this.polyline.getPath().getArray().slice(0),
+    var coordinates = this.route.getPolyline().getPath().getArray().slice(0),
         totalDistance = 0,
         prevDistance = 0,
         expectedDistance = this.distanceBetween,
@@ -109,7 +118,7 @@
   Markers.prototype.drawMarkers = function() {
     var self = this;
     this.markers.forEach(function(marker) {
-      marker.setMap(self.polyline.getMap());
+      marker.setMap(self.route.getPolyline().getMap());
       marker.setVisible(self.visible);
     });
   };

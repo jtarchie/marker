@@ -5,7 +5,7 @@
 
   app.controller('MapController', ['$scope', 'Route', 'Markers', function($scope, Route, Markers) {
     var route = new Route(),
-        markers = new Markers(route.getPolyline());
+        markers = new Markers(route);
 
     $scope.$on('places:changed', function(_event, place) {
       var map = $scope.map;
@@ -31,6 +31,11 @@
     $scope.$watch('showMapMarkers', function() {
       markers.setVisible($scope.showMapMarkers);
     });
+
+    $scope.reset = function() {
+      route.reset();
+      markers.draw();
+    };
 
     $scope.route = route;
     $scope.unitType = google.maps.UnitSystem.METRIC;
