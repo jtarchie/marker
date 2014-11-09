@@ -18,7 +18,7 @@
     });
 
     $scope.$on('map:click', function(event, latLng) {
-      route.addLatLng(latLng).then(function() {
+      route.addCoordinate(latLng).then(function() {
         route.getPolyline().setMap($scope.map);
         markers.draw();
       });
@@ -33,7 +33,12 @@
     });
 
     $scope.reset = function() {
-      route.reset();
+      route.removeAllCoordinates();
+      markers.draw();
+    };
+
+    $scope.undo = function() {
+      route.removeLastCoordinate();
       markers.draw();
     };
 

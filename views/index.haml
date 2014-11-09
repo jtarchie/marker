@@ -9,10 +9,11 @@
     %script{id: 'index.html', type: 'text/ng-template'}
       #sidebar.col-lg-3
         .panel.panel-default
-          .panel-body
+          .panel-body.text-center
             .btn-group
               %button.btn.btn-default.glyphicon.glyphicon-map-marker{'type'=>'button', 'ng-model' => 'showMapMarkers', 'btn-checkbox' => true}
               %button.btn.btn-default.glyphicon.glyphicon-trash{'type' => 'button', 'ng-click' => 'reset()'}
+              %button.btn.btn-default.glyphicon.glyphicon-remove{'type' => 'button', 'ng-click' => 'undo()'}
           .panel-heading
             %h3.panel-title Search
           .panel-body
