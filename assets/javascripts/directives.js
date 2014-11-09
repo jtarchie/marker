@@ -32,7 +32,7 @@
 
         $scope.map = map;
       }
-    }
+    };
   });
 
   app.directive('ngPlaceAutocompleter', function() {
@@ -52,6 +52,6 @@
         });
         $scope.autocompleter = autocompleter;
       }
-    }
+    };
   });
 })(angular, google, document);

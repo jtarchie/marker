@@ -22,7 +22,7 @@
         prevDistance = 0,
         expectedDistance = this.distanceBetween,
         markers = [];
-    for(var i = 1; i < coordinates.length; i++) {
+    for(var i = 1; i < coordinates.length; i+=1) {
       var prevLatLng = coordinates[ i-1 ],
           thisLatLng = coordinates[ i ];
 
@@ -48,7 +48,7 @@
       }
     }
 
-    for(var i = 0; i < this.markers.length; i++) {
+    for(i = 0; i < this.markers.length; i+=1) {
       this.markers[i].setMap(null);
     }
 

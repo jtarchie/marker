@@ -12,7 +12,7 @@
       } else {
         return meters / 1609.34;
       }
-    }
+    };
   });
 
   app.filter('unitAbbr', function() {
@@ -24,6 +24,6 @@
       } else {
         return 'miles';
       }
-    }
+    };
   });
 })(angular);

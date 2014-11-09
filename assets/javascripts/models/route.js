@@ -37,9 +37,8 @@
 
     if(!lastCoordinate) { return; }
 
-    for(var i = path.getLength() - 1; i >= 0; i--) {
+    for(var i = path.getLength() - 1; i >= 0; i-=1) {
       var coordinate = path.getAt(i);
-      console.log(i, coordinate, lastCoordinate);
       path.removeAt(i);
       if(lastCoordinate.equals(coordinate)) {
         return;
