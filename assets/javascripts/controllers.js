@@ -3,9 +3,11 @@
 
   var app = angular.module('myApp');
 
-  app.controller('MapController', ['$scope', 'Route', 'Markers', function($scope, Route, Markers) {
-    var route = new Route(),
-        markers = new Markers(route);
+  app.controller('MapController', ['$scope', 'Route', 'Markers', 'UnitType', 'RouteType', function($scope, Route, Markers, UnitType, RouteType) {
+    var routeType = new RouteType(),
+        route = new Route(routeType),
+        unitType = new UnitType(),
+        markers = new Markers(route, unitType);
 
     $scope.$on('places:changed', function(_event, place) {
       var map = $scope.map;
@@ -24,14 +26,6 @@
       });
     });
 
-    $scope.$watch('routeType', function() {
-      route.setRouteType($scope.routeType);
-    });
-
-    $scope.$watch('showMapMarkers', function() {
-      markers.setVisible($scope.showMapMarkers);
-    });
-
     $scope.reset = function() {
       route.removeAllCoordinates();
       markers.draw();
@@ -43,8 +37,8 @@
     };
 
     $scope.route = route;
-    $scope.unitType = google.maps.UnitSystem.METRIC;
-    $scope.routeType = route.getRouteType();
-    $scope.showMapMarkers = markers.getVisible();
+    $scope.unitType = unitType;
+    $scope.markers = markers;
+    $scope.routeType = routeType;
   }]);
 })(angular, google);

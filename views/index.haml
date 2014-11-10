@@ -11,7 +11,7 @@
         .panel.panel-default
           .panel-body.text-center
             .btn-group
-              %button.btn.btn-default.glyphicon.glyphicon-map-marker{'type'=>'button', 'ng-model' => 'showMapMarkers', 'btn-checkbox' => true}
+              %button.btn.btn-default.glyphicon.glyphicon-map-marker{'type'=>'button', 'ng-click' => 'markers.toggleVisible()', 'ng-active' => 'markers.getVisible()'}
               %button.btn.btn-default.glyphicon.glyphicon-trash{'type' => 'button', 'ng-click' => 'reset()'}
               %button.btn.btn-default.glyphicon.glyphicon-remove{'type' => 'button', 'ng-click' => 'undo()'}
           .panel-heading
@@ -23,20 +23,18 @@
           .panel-body.text-center
             %h2 {{ route.totalDistance() | unit:unitType | number:2 }} {{ unitType | unitAbbr }}
             .btn-group
-              %button.btn.btn-default{'ng-model' => 'unitType', 'btn-radio' => '1'} Imperial
-              %button.btn.btn-default{'ng-model' => 'unitType', 'btn-radio' => '0'} Metric
+              %button.btn.btn-default{'ng-click' => 'unitType.toggleType()', 'ng-active' => 'unitType.isImperial()'} Imperial
+              %button.btn.btn-default{'ng-click' => 'unitType.toggleType()', 'ng-active' => 'unitType.isMetric()'} Metric
           .panel-heading
             %h3.panel-title Route Type
           .panel-body.text-center
             .btn-group
-              %button.btn.btn-default{'ng-model' => 'routeType', 'btn-radio' => "'WALKING'"} Running
-              %button.btn.btn-default{'ng-model' => 'routeType', 'btn-radio' => "'BICYCLING'"} Cycling
-              %button.btn.btn-default{'ng-model' => 'routeType', 'btn-radio' => "'NOTHING'"} Manual
+              %button.btn.btn-default{'ng-click' => 'routeType.toggleWalking()', 'ng-active' => 'routeType.isWalking()'} Running
+              %button.btn.btn-default{'ng-click' => 'routeType.toggleBicycling()', 'ng-active' => 'routeType.isBicycling()'} Cycling
+              %button.btn.btn-default{'ng-click' => 'routeType.toggleManual()', 'ng-active' => 'routeType.isManual()'} Manual
       %ng-google-map
 
     %script{src: "//maps.googleapis.com/maps/api/js?libraries=places,geometry&key=#{ENV['GOOGLE_API_KEY']}"}
     %script{src: '//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.5/angular.js'}
     %script{src: '//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.5/angular-route.js'}
-    %script{src: '//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.2/ui-bootstrap-tpls.min.js'}
-    %script{src: '//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.2/ui-bootstrap.min.js'}
     %script{src: '/assets/app.js'}

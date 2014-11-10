@@ -5,21 +5,13 @@
 
   app.filter('unit', function() {
     return function(meters, unitType) {
-      unitType = unitType || google.maps.UnitSystem.METRIC;
-
-      if(unitType === google.maps.UnitSystem.METRIC) {
-        return meters / 1000;
-      } else {
-        return meters / 1609.34;
-      }
+      return meters / unitType.conversionRate();
     };
   });
 
   app.filter('unitAbbr', function() {
     return function(unitType) {
-      unitType = unitType || google.maps.UnitSystem.METRIC;
-
-      if(unitType === google.maps.UnitSystem.METRIC) {
+      if(unitType.isMetric()) {
         return 'km';
       } else {
         return 'miles';

@@ -3,24 +3,24 @@
 
   var app = angular.module('myApp');
 
-  function Markers(route) {
+  function Markers(route, userType) {
     this.route = route;
     this.visible = true;
-    this.distanceBetween = 1609.34;
+    this.userType = userType;
     this.markers = [];
   }
   Markers.prototype.getVisible = function() {
     return this.visible;
   };
-  Markers.prototype.setVisible = function(visible) {
-    this.visible = visible;
+  Markers.prototype.toggleVisible = function() {
+    this.visible = !this.visible;
     this.drawMarkers();
   };
   Markers.prototype.draw = function() {
     var coordinates = this.route.getPolyline().getPath().getArray().slice(0),
         totalDistance = 0,
         prevDistance = 0,
-        expectedDistance = this.distanceBetween,
+        expectedDistance = this.userType.conversionRate(),
         markers = [];
     for(var i = 1; i < coordinates.length; i+=1) {
       var prevLatLng = coordinates[ i-1 ],
@@ -44,7 +44,7 @@
         markers.push(marker);
         coordinates.splice(i, 0, markerLocation);
         totalDistance -= google.maps.geometry.spherical.computeDistanceBetween(markerLocation, thisLatLng);
-        expectedDistance = this.distanceBetween * (markers.length + 1);
+        expectedDistance = this.userType.conversionRate() * (markers.length + 1);
       }
     }
 

@@ -9,9 +9,9 @@
 
   var app = angular.module('myApp');
 
-  function Route() {
+  function Route(routeType) {
     newPolyline(this);
-    this.routeType = google.maps.TravelMode.WALKING;
+    this.routeType = routeType;
     this.userCapturedCoordinates = [];
   }
   Route.prototype.totalDistance = function() {
@@ -19,12 +19,6 @@
   };
   Route.prototype.getPolyline = function() {
     return this.polyline;
-  };
-  Route.prototype.setRouteType = function(routeType) {
-    this.routeType = routeType;
-  };
-  Route.prototype.getRouteType = function() {
-    return this.routeType;
   };
   Route.prototype.removeAllCoordinates = function() {
     this.polyline.setMap(null);
@@ -53,7 +47,7 @@
           self = this;
 
 
-      if(path.getLength() === 0 || this.routeType === 'NOTHING') {
+      if(path.getLength() === 0 || this.routeType.isManual()) {
         setTimeout(deferred.resolve, 0);
         return deferred.promise.then(function() {
           self.userCapturedCoordinates.push(latLng);
@@ -64,7 +58,7 @@
         directionsService.route({
           origin: path.getAt(path.getLength() - 1),
           destination: latLng,
-          travelMode: this.routeType
+          travelMode: this.routeType.getGoogleConst()
         }, function(response, status) {
           if(status === google.maps.DirectionsStatus.OK) {
             self.userCapturedCoordinates.push(response.routes[0].overview_path[0]);
