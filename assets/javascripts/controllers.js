@@ -36,6 +36,11 @@
       markers.draw();
     };
 
+    $scope.toggleUnits = function() {
+      unitType.toggleType();
+      markers.draw();
+    };
+
     $scope.route = route;
     $scope.unitType = unitType;
     $scope.markers = markers;

@@ -23,8 +23,8 @@
           .panel-body.text-center
             %h2 {{ route.totalDistance() | unit:unitType | number:2 }} {{ unitType | unitAbbr }}
             .btn-group
-              %button.btn.btn-default{'ng-click' => 'unitType.toggleType()', 'ng-active' => 'unitType.isImperial()'} Imperial
-              %button.btn.btn-default{'ng-click' => 'unitType.toggleType()', 'ng-active' => 'unitType.isMetric()'} Metric
+              %button.btn.btn-default{'ng-click' => 'toggleUnits()', 'ng-active' => 'unitType.isImperial()'} Imperial
+              %button.btn.btn-default{'ng-click' => 'toggleUnits()', 'ng-active' => 'unitType.isMetric()'} Metric
           .panel-heading
             %h3.panel-title Route Type
           .panel-body.text-center
