@@ -3,7 +3,8 @@
 
   var app = angular.module('myApp');
 
-  app.controller('MapController', ['$scope', 'Route', 'Markers', 'UnitType', 'RouteType', function($scope, Route, Markers, UnitType, RouteType) {
+  app.controller('MapController', ['$scope', 'Route', 'Markers', 'UnitType', 'RouteType', 'RouteResource',
+                 function($scope, Route, Markers, UnitType, RouteType, RouteResource) {
     var routeType = new RouteType(),
         route = new Route(routeType),
         unitType = new UnitType(),
@@ -39,6 +40,10 @@
     $scope.toggleUnits = function() {
       unitType.toggleType();
       markers.draw();
+    };
+
+    $scope.save = function() {
+      RouteResource.save(route);
     };
 
     $scope.route = route;

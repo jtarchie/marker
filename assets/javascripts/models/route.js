@@ -39,6 +39,9 @@
       }
     }
   };
+  Route.prototype.allCoordinates = function() {
+    return this.polyline.getPath().getArray();
+  };
 
   app.service('Route', ['$q', function($q) {
     Route.prototype.addCoordinate = function(latLng) {

@@ -1,8 +1,5 @@
 Bundler.require
+Dotenv.load
 
 require_relative 'app'
-
-Dotenv.load if defined?(Dotenv)
-
-
 run App

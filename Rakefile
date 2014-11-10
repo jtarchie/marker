@@ -1,6 +1,11 @@
-require "jshintrb/jshinttask"
+Bundler.require
+Dotenv.load
+
+require 'pry'
+require 'jshintrb/jshinttask'
 require 'jasmine'
 require 'sinatra/asset_pipeline/task'
+require 'sinatra/activerecord/rake'
 require_relative 'app'
 
 Jshintrb::JshintTask.new :jshint do |t|
