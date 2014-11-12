@@ -16,7 +16,7 @@
               %button.btn.btn-default.glyphicon.glyphicon-remove{'type' => 'button', 'ng-click' => 'undo()'}
               %button.btn.btn-default.glyphicon.glyphicon-floppy-disk{'type' => 'button', 'ng-click' => 'save()'}
           .panel-heading
-            %h3.panel-title Search
+            %h3.panel-title Location Search
           .panel-body
             %ng-place-autocompleter
           .panel-heading
@@ -33,6 +33,16 @@
               %button.btn.btn-default{'ng-click' => 'routeType.toggleWalking()', 'ng-active' => 'routeType.isWalking()'} Running
               %button.btn.btn-default{'ng-click' => 'routeType.toggleBicycling()', 'ng-active' => 'routeType.isBicycling()'} Cycling
               %button.btn.btn-default{'ng-click' => 'routeType.toggleManual()', 'ng-active' => 'routeType.isManual()'} Manual
+          .panel-heading
+            %h3.panel-title Route Information
+          .panel-body
+            .form
+              .form-group
+                %label.control-label Name
+                %input.form-control{type: 'text', 'ng-model' => 'route.name'}
+              .form-group
+                %label.control-label Description
+                %input.form-control{type: 'text', 'ng-model' => 'route.description'}
       %ng-google-map
 
     %script{src: "//maps.googleapis.com/maps/api/js?libraries=places,geometry&key=#{ENV['GOOGLE_API_KEY']}"}

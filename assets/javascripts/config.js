@@ -5,7 +5,7 @@
 
   app.config(['$routeProvider', function($routeProvider) {
     $routeProvider
-      .when('/', {
+      .when('/:id?', {
         templateUrl: 'index.html',
         controller: 'MapController'
       });

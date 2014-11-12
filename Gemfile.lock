@@ -25,6 +25,8 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.8.0)
+    database_cleaner (1.3.0)
+    diff-lcs (1.2.5)
     dotenv (1.0.2)
     execjs (2.2.2)
     foreman (0.63.0)
@@ -57,6 +59,8 @@ GEM
     puma (2.9.2)
       rack (>= 1.1, < 2.0)
     rack (1.5.2)
+    rack-contrib (1.2.0)
+      rack (>= 0.9.1)
     rack-protection (1.5.3)
       rack
     rack-test (0.6.2)
@@ -68,6 +72,18 @@ GEM
       rgeo (~> 0.3)
     rgeo-geojson (0.3.1)
       rgeo (~> 0.3)
+    rspec (3.1.0)
+      rspec-core (~> 3.1.0)
+      rspec-expectations (~> 3.1.0)
+      rspec-mocks (~> 3.1.0)
+    rspec-core (3.1.7)
+      rspec-support (~> 3.1.0)
+    rspec-expectations (3.1.2)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.1.0)
+    rspec-mocks (3.1.3)
+      rspec-support (~> 3.1.0)
+    rspec-support (3.1.2)
     sass (3.4.7)
     sinatra (1.4.5)
       rack (~> 1.4)
@@ -113,6 +129,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-postgis-adapter
+  database_cleaner
   dotenv
   foreman
   haml
@@ -121,7 +138,10 @@ DEPENDENCIES
   pg
   pry
   puma
+  rack-contrib
+  rack-test
   rgeo-geojson
+  rspec
   sinatra
   sinatra-activerecord
   sinatra-asset-pipeline

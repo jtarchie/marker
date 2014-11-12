@@ -15,3 +15,11 @@ bundle install
 foreman start
 open http://localhost:9292
 ```
+
+# Tests
+
+```sh
+echo "RACK_ENV=test" > .env.test
+bundle install
+rspec
+```

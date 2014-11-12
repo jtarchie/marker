@@ -3,8 +3,8 @@
 
   var app = angular.module('myApp');
 
-  app.controller('MapController', ['$scope', 'Route', 'Markers', 'UnitType', 'RouteType', 'RouteResource',
-                 function($scope, Route, Markers, UnitType, RouteType, RouteResource) {
+  app.controller('MapController', ['$scope', '$routeParams', '$location', 'Route', 'Markers', 'UnitType', 'RouteType', 'RouteResource',
+                 function($scope, $routeParams, $location, Route, Markers, UnitType, RouteType, RouteResource) {
     var routeType = new RouteType(),
         route = new Route(routeType),
         unitType = new UnitType(),
@@ -22,29 +22,49 @@
 
     $scope.$on('map:click', function(event, latLng) {
       route.addCoordinate(latLng).then(function() {
-        route.getPolyline().setMap($scope.map);
-        markers.draw();
+        $scope.route.getPolyline().setMap($scope.map);
+        $scope.markers.draw();
       });
     });
 
     $scope.reset = function() {
-      route.removeAllCoordinates();
-      markers.draw();
+      $scope.route.removeAllCoordinates();
+      $scope.markers.draw();
     };
 
     $scope.undo = function() {
-      route.removeLastCoordinate();
-      markers.draw();
+      $scope.route.removeLastCoordinate();
+      $scope.markers.draw();
     };
 
     $scope.toggleUnits = function() {
-      unitType.toggleType();
-      markers.draw();
+      $scope.unitType.toggleType();
+      $scope.markers.draw();
     };
 
     $scope.save = function() {
-      RouteResource.save(route);
+      RouteResource.save($scope.route).then(function(newRoute) {
+        $scope.route = newRoute;
+        $scope.route.routeType = routeType;
+        $scope.markers = new Markers(route, unitType);
+        $location.path('/' + $scope.route.id).replace();
+      });
     };
+
+    if($routeParams.id) {
+      RouteResource.load($routeParams.id).then(function(newRoute) {
+        $scope.route = newRoute;
+        $scope.route.routeType = routeType;
+        $scope.route.getPolyline().setMap($scope.map);
+        $scope.markers = new Markers($scope.route, unitType);
+        $scope.markers.draw();
+        var bounds = new google.maps.LatLngBounds();
+        $scope.route.allCoordinates().forEach(function(coordinate) {
+          bounds.extend(coordinate);
+        });
+        $scope.map.fitBounds(bounds);
+      });
+    }
 
     $scope.route = route;
     $scope.unitType = unitType;

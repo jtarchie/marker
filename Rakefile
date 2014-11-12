@@ -1,7 +1,6 @@
 Bundler.require
 Dotenv.load
 
-require 'pry'
 require 'jshintrb/jshinttask'
 require 'jasmine'
 require 'sinatra/asset_pipeline/task'

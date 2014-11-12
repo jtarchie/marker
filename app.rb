@@ -1,11 +1,10 @@
 require 'sinatra/activerecord'
 require 'sinatra/asset_pipeline'
 require 'sinatra/reloader'
-require 'pry'
 
 class Route < ActiveRecord::Base; end
 
-class App < Sinatra::Base
+class MarkerApp < Sinatra::Base
   register Sinatra::AssetPipeline
   register Sinatra::ActiveRecordExtension
 
@@ -14,8 +13,20 @@ class App < Sinatra::Base
   end
 
   helpers do
-    def parsed_json
-      @parsed_json ||= JSON.parse(response.body)
+    def geojson_route(route)
+      content_type :json
+
+      entity_factory = RGeo::GeoJSON::EntityFactory.instance
+      RGeo::GeoJSON.encode(
+        entity_factory.feature_collection(
+          [
+            entity_factory.feature(route.path, route.id, {
+              name: route.name,
+              description: route.description
+            })
+          ]
+        )
+      ).to_json
     end
   end
 
@@ -25,9 +36,18 @@ class App < Sinatra::Base
 
   post '/routes' do
     geo_json = RGeo::GeoJSON.decode(request.body.read.to_s, json_parser: :json)
+    feature = geo_json.first
     route = Route.create!(
-      path: geo_json.first.geometry
+      path: feature.geometry,
+      name: feature.properties['name'],
+      description: feature.properties['description']
     )
-    route.to_json
+
+    geojson_route(route)
+  end
+
+  get '/routes/:id' do |id|
+    route = Route.find(id)
+    geojson_route(route)
   end
 end
