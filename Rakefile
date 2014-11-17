@@ -1,35 +1,38 @@
 Bundler.require
 Dotenv.load
 
-require 'jshintrb/jshinttask'
-require 'jasmine'
+begin
+  require 'jshintrb/jshinttask'
+  require 'jasmine'
+  load 'jasmine/tasks/jasmine.rake'
+  Jshintrb::JshintTask.new :jshint do |t|
+    t.pattern = 'assets/javascripts/**/*.js'
+    t.options = {
+      :bitwise => true,
+      :curly => true,
+      :eqeqeq => true,
+      :forin => true,
+      :immed => true,
+      :latedef => true,
+      :newcap => true,
+      :noarg => true,
+      :noempty => true,
+      :nonew => true,
+      :plusplus => true,
+      predef: ['angular', 'google'],
+      :regexp => true,
+      :undef => true,
+      :strict => true,
+      :trailing => true,
+      :browser => true
+    }
+  end
+rescue LoadError
+  puts 'Jasmine and JSHint were not loaded'
+end
+
 require 'sinatra/asset_pipeline/task'
 require 'sinatra/activerecord/rake'
 require_relative 'app'
 
-Jshintrb::JshintTask.new :jshint do |t|
-  t.pattern = 'assets/javascripts/**/*.js'
-  t.options = {
-    :bitwise => true,
-    :curly => true,
-    :eqeqeq => true,
-    :forin => true,
-    :immed => true,
-    :latedef => true,
-    :newcap => true,
-    :noarg => true,
-    :noempty => true,
-    :nonew => true,
-    :plusplus => true,
-    predef: ['angular', 'google'],
-    :regexp => true,
-    :undef => true,
-    :strict => true,
-    :trailing => true,
-    :browser => true
-  }
-end
-
-Sinatra::AssetPipeline::Task.define! App
-
-load 'jasmine/tasks/jasmine.rake'
+Sinatra::AssetPipeline::Task.define! MarkerApp
