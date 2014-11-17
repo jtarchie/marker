@@ -11,7 +11,13 @@
 #   - dist/**/*.js
 #
 src_files:
-  - public/javascripts/**/*.js
+  - spec/javascripts/support/mocks/*.js
+  - assets/javascripts/vendor/angularjs/angular.js
+  - assets/javascripts/vendor/angularjs/angular-route.js
+  - assets/javascripts/vendor/angularjs/angular-mocks.js
+  - assets/javascripts/*.js
+  - assets/javascripts/directives/*.js
+  - assets/javascripts/models/*.js
 
 # stylesheets
 #

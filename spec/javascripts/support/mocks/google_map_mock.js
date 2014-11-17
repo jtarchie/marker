@@ -1,0 +1,5 @@
+window.google = {
+  maps: {
+    UnitSystem: {}
+  }
+};

@@ -1,4 +1,4 @@
-(function(angular, undefined) {
+(function(angular, google, undefined) {
   'use strict';
 
   var app = angular.module('myApp');
