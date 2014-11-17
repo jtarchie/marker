@@ -22,5 +22,5 @@ group :development do
   gem 'rspec'
 end
 
-ruby '2.1.4'
+ruby '2.1.5'
 
