@@ -17,7 +17,7 @@
     this.drawMarkers();
   };
   Markers.prototype.draw = function() {
-    var coordinates = this.route.getPolyline().getPath().getArray().slice(0),
+    var coordinates = this.route.allCoordinates().slice(0),
         totalDistance = 0,
         prevDistance = 0,
         expectedDistance = this.unitType.conversionRate(),
@@ -58,7 +58,7 @@
   Markers.prototype.drawMarkers = function() {
     var self = this;
     this.markers.forEach(function(marker) {
-      marker.setMap(self.route.getPolyline().getMap());
+      marker.setMap(self.route.getMap());
       marker.setVisible(self.visible);
     });
   };

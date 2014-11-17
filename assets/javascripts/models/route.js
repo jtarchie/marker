@@ -42,6 +42,9 @@
   Route.prototype.allCoordinates = function() {
     return this.polyline.getPath().getArray();
   };
+  Route.prototype.getMap = function() {
+    return this.polyline.getMap();
+  };
 
   app.service('Route', ['$q', function($q) {
     Route.prototype.addCoordinate = function(latLng) {
