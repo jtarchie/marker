@@ -7,6 +7,7 @@ begin
   load 'jasmine/tasks/jasmine.rake'
   Jshintrb::JshintTask.new :jshint do |t|
     t.pattern = 'assets/javascripts/**/*.js'
+    t.exclude_pattern = 'assets/javascripts/vendor/**/*.js'
     t.options = {
       :bitwise => true,
       :curly => true,
