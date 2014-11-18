@@ -9,13 +9,15 @@
       var route = new Route(),
       feature = featureCollection.features[0];
 
-      feature.geometry.coordinates.forEach(function(coordinate) {
-        var latLng = new google.maps.LatLng(coordinate[1], coordinate[0]);
-        route.getPolyline().getPath().push(latLng);
-      });
-      route.id = feature.id;
-      route.name = feature.properties.name;
-      route.description = feature.properties.description;
+      if(feature) {
+        feature.geometry.coordinates.forEach(function(coordinate) {
+          var latLng = new google.maps.LatLng(coordinate[1], coordinate[0]);
+          route.getPolyline().getPath().push(latLng);
+        });
+        route.id = feature.id;
+        route.name = feature.properties.name;
+        route.description = feature.properties.description;
+      }
       return route;
     }
 
@@ -44,7 +46,7 @@
       load: function(id) {
         var deferred = $q.defer();
 
-        $http.get('/routes/' + id)
+        $http.get('/routes/' + String(id))
           .success(function(featureCollection) {
             var route = createRouteFromFeatureCollection(featureCollection);
             deferred.resolve(route);

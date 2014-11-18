@@ -9,10 +9,7 @@ describe('Markers', function() {
     var markers, unitType, route;
 
     beforeEach(inject(function(Markers) {
-      route = {
-        allCoordinates: function() { return [{}, {}]; },
-        getMap: function() {}
-      };
+      route = createRoute();
       unitType = {
         conversionRate: function() { return 1; }
       };
