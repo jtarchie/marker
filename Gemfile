@@ -12,6 +12,8 @@ gem 'rgeo-geojson'
 gem 'sass'
 
 group :development, :test do
+  gem 'capybara'
+  gem 'capybara-webkit'
   gem 'database_cleaner'
   gem 'foreman'
   gem 'jasmine'
