@@ -44,10 +44,7 @@
 
     $scope.save = function() {
       RouteResource.save($scope.route).then(function(newRoute) {
-        $scope.route = newRoute;
-        $scope.route.routeType = routeType;
-        $scope.markers = new Markers(route, unitType);
-        $location.path('/' + $scope.route.id).replace();
+        $location.path('/' + newRoute.id).replace();
       });
     };
 
