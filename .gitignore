@@ -1,3 +1,6 @@
 .env*
 .sass-cache/
 public/assets/
+/.bundle
+/log/*.log
+/tmp

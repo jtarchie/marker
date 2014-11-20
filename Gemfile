@@ -1,25 +1,24 @@
 source 'https://rubygems.org'
 
 gem 'activerecord-postgis-adapter'
-gem 'dotenv'
+gem 'angular_rails_csrf'
+gem 'dotenv-rails'
 gem 'haml'
 gem 'pg'
 gem 'puma'
 gem 'rack-contrib'
+gem 'rails'
 gem 'rgeo-geojson'
-gem 'sinatra'
-gem 'sinatra-activerecord'
-gem 'sinatra-asset-pipeline'
-gem 'sinatra-contrib', require: false
+gem 'sass'
 
-group :development do
+group :development, :test do
   gem 'database_cleaner'
   gem 'foreman'
   gem 'jasmine'
   gem 'jshintrb'
   gem 'pry'
   gem 'rack-test', require: 'rack/test'
-  gem 'rspec'
+  gem 'rspec-rails'
 end
 
 ruby '2.1.5'

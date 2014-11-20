@@ -1,15 +1,8 @@
-require 'spec_helper'
-require_relative '../app'
+require 'rails_helper'
 
-describe MarkerApp do
-  include Rack::Test::Methods
-
-  def app
-    MarkerApp.new
-  end
-
+describe 'When makeing API requests' do
   def json_response
-    @json ||= JSON.parse(last_response.body)
+    @json ||= JSON.parse(response.body)
   end
 
   let(:payload) do
@@ -36,8 +29,8 @@ describe MarkerApp do
   context 'GET /' do
     it 'returns a successful HTML response' do
       get '/'
-      expect(last_response).to be_ok
-      expect(last_response.content_type).to eq 'text/html;charset=utf-8'
+      expect(response).to be_ok
+      expect(response.content_type.to_s).to eq 'text/html'
     end
   end
 
@@ -52,13 +45,13 @@ describe MarkerApp do
 
     it 'returns a successful response' do
       post '/routes', json_payload, {'Content-Type' => 'application/json'}
-      expect(last_response.content_type).to eq 'application/json'
-      expect(last_response).to be_ok
+      expect(response.content_type).to eq 'application/json'
+      expect(response).to be_ok
     end
 
     it 'returns a GeoJSON response of the route' do
       post '/routes', json_payload, {'Content-Type' => 'application/json'}
-      expect(last_response.content_type).to eq 'application/json'
+      expect(response.content_type).to eq 'application/json'
       feature = json_response['features'][0]
       expect(feature['geometry']['coordinates']).to eq payload['features'][0]['geometry']['coordinates']
       expect(feature['id']).to be_kind_of(Fixnum)
@@ -82,8 +75,8 @@ describe MarkerApp do
 
     it 'returns a successful response' do
       get "/routes/#{route.id}", {}, {"Accept" => "application/json"}
-      expect(last_response.content_type).to eq 'application/json'
-      expect(last_response).to be_ok
+      expect(response.content_type).to eq 'application/json'
+      expect(response).to be_ok
     end
 
     it 'returns a GeoJSON response of the route' do
