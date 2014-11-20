@@ -12,12 +12,8 @@
 #
 src_files:
   - spec/javascripts/support/mocks/*.js
-  - assets/javascripts/vendor/angularjs/angular.js
-  - assets/javascripts/vendor/angularjs/angular-route.js
-  - assets/javascripts/vendor/angularjs/angular-mocks.js
-  - assets/javascripts/*.js
-  - assets/javascripts/directives/*.js
-  - assets/javascripts/models/*.js
+  - assets/application.js
+  - app/assets/javascripts/vendor/angularjs/angular-mocks.js
 
 # stylesheets
 #
@@ -31,7 +27,7 @@ src_files:
 #   - stylesheets/*.css
 #
 stylesheets:
-  - stylesheets/**/*.css
+  - assets/application.css
 
 # helpers
 #
