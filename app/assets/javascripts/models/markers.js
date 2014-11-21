@@ -13,10 +13,13 @@
     return this.visible;
   };
   Markers.prototype.toggleVisible = function() {
+    var self = this;
     this.visible = !this.visible;
-    this.drawMarkers();
+    this.markers.forEach(function(marker) {
+      marker.setVisible(self.visible);
+    });
   };
-  Markers.prototype.draw = function() {
+  Markers.prototype.draw = function(map) {
     var coordinates = this.route.allCoordinates().slice(0),
         totalDistance = 0,
         prevDistance = 0,
@@ -53,12 +56,15 @@
     }
 
     this.markers = markers;
-    this.drawMarkers();
+    this._drawMarkers(map);
   };
-  Markers.prototype.drawMarkers = function() {
+  Markers.prototype.setRoute = function(route) {
+    this.route = route;
+  };
+  Markers.prototype._drawMarkers = function(map) {
     var self = this;
     this.markers.forEach(function(marker) {
-      marker.setMap(self.route.getMap());
+      marker.setMap(map);
       marker.setVisible(self.visible);
     });
   };

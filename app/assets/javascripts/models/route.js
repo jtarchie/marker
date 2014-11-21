@@ -42,11 +42,14 @@
   Route.prototype.allCoordinates = function() {
     return this.polyline.getPath().getArray();
   };
-  Route.prototype.getMap = function() {
-    return this.polyline.getMap();
-  };
   Route.prototype.toString = function() {
     return '[Object Route]';
+  };
+  Route.prototype.draw = function(map) {
+    this.polyline.setMap(map);
+  };
+  Route.prototype.setRouteType = function(routeType) {
+    this.routeType = routeType;
   };
 
   app.service('Route', ['$q', function($q) {

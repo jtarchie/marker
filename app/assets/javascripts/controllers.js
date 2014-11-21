@@ -3,12 +3,15 @@
 
   var app = angular.module('myApp');
 
-  app.controller('MapController', ['$scope', '$routeParams', '$location', 'Route', 'Markers', 'UnitType', 'RouteType', 'RouteResource',
-                 function($scope, $routeParams, $location, Route, Markers, UnitType, RouteType, RouteResource) {
-    var routeType = new RouteType(),
-        route = new Route(routeType),
-        unitType = new UnitType(),
-        markers = new Markers(route, unitType);
+  app.controller('MapController', ['$scope', '$routeParams', '$location', 'MapHandler', 'RouteResource',
+                 function($scope, $routeParams, $location, MapHandler, RouteResource) {
+
+    var mapHandler = new MapHandler();
+    mapHandler.applyToScope($scope);
+
+    $scope.$watch('map', function() {
+      mapHandler.setMap($scope.map);
+    });
 
     $scope.$on('places:changed', function(_event, place) {
       var map = $scope.map;
@@ -21,51 +24,26 @@
     });
 
     $scope.$on('map:click', function(event, latLng) {
-      route.addCoordinate(latLng).then(function() {
-        $scope.route.getPolyline().setMap($scope.map);
-        $scope.markers.draw();
-      });
+      mapHandler.addCoordinate(latLng);
     });
 
-    $scope.reset = function() {
-      $scope.route.removeAllCoordinates();
-      $scope.markers.draw();
-    };
-
-    $scope.undo = function() {
-      $scope.route.removeLastCoordinate();
-      $scope.markers.draw();
-    };
-
-    $scope.toggleUnits = function() {
-      $scope.unitType.toggleType();
-      $scope.markers.draw();
-    };
+    $scope.reset = angular.bind(mapHandler, mapHandler.clearCoordinates);
+    $scope.undo = angular.bind(mapHandler, mapHandler.removeLastCoordinate);
+    $scope.toggleUnits = angular.bind(mapHandler, mapHandler.toggleUnits);
 
     $scope.save = function() {
-      RouteResource.save($scope.route).then(function(newRoute) {
+      RouteResource.save(mapHandler.route).then(function(newRoute) {
         $location.path('/' + newRoute.id).replace();
       });
     };
 
     if($routeParams.id) {
       RouteResource.load($routeParams.id).then(function(newRoute) {
-        $scope.route = newRoute;
-        $scope.route.routeType = routeType;
-        $scope.route.getPolyline().setMap($scope.map);
-        $scope.markers = new Markers($scope.route, unitType);
-        $scope.markers.draw();
-        var bounds = new google.maps.LatLngBounds();
-        $scope.route.allCoordinates().forEach(function(coordinate) {
-          bounds.extend(coordinate);
-        });
-        $scope.map.fitBounds(bounds);
+        mapHandler.setRoute(newRoute);
+        mapHandler.draw();
+        mapHandler.applyToScope($scope);
+        $scope.map.fitBounds(mapHandler.bounds());
       });
     }
-
-    $scope.route = route;
-    $scope.unitType = unitType;
-    $scope.markers = markers;
-    $scope.routeType = routeType;
   }]);
 })(angular, google);
