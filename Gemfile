@@ -1,10 +1,9 @@
 source 'https://rubygems.org'
 
-gem 'activerecord-postgis-adapter'
 gem 'angular_rails_csrf'
 gem 'dotenv-rails'
+gem 'elasticsearch-persistence', require: 'elasticsearch/persistence/model'
 gem 'haml'
-gem 'pg'
 gem 'puma'
 gem 'rack-contrib'
 gem 'rails'
